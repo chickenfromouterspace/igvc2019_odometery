@@ -1,3 +1,4 @@
+# Serial Test
 1. Get a USB-RS232-3.3 cable.
 2. Connect the RX labeled wire to TXD0 on the Jetson TX2.
 3. Connect the TX labeled wire to RXD0 on the Jetson TX2.
