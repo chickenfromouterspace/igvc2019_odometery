@@ -13,6 +13,13 @@ void clean_and_exit(int code);
 extern "C" void quit_signal_handler(int signum);
 extern "C" void uart_signal_handler(int signum);
 
+char translateChar(char a)
+{
+    a = ((unsigned char)a << 1 | a >> 7);
+    a = ~a;
+    return a;
+}
+
 int main (int argc, char **argv)
 {
     // help variables
@@ -26,10 +33,10 @@ int main (int argc, char **argv)
     tcsetattr( STDIN_FILENO, TCSANOW, &newt);
 
     // Open serial port
-    serial_descriptor = open("/dev/ttyTHS1", O_RDWR | O_NDELAY | O_NONBLOCK);
+    serial_descriptor = open("/dev/ttyUSB0", O_RDWR | O_NDELAY | O_NONBLOCK);
     if (serial_descriptor == -1)
     {
-        printf("Could not open serial port on /dev/ttyTHS1!\n");
+        printf("Could not open serial port on /dev/ttyUSB0!\n");
         clean_and_exit(-1);
     }
     else fcntl(serial_descriptor, F_SETFL, 0);
@@ -118,6 +125,7 @@ void uart_signal_handler(int signum)
         {
             printf("Will end now!\n");
             clean_and_exit(0);
-        } else printf("Got command = %c\n", buffer[0]);
+        } else printf("Got command = %c\n", translateChar(buffer[0]));
     }
 }
+
